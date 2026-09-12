@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Coupon Usage Logs – MarketPulse Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 pb-2 border-bottom">
+  <div>
+    <a href="{{ url_for('coupons.list_coupons_admin') }}" class="btn btn-sm btn-outline-secondary mb-2">
+      <i class="bi bi-arrow-left me-1"></i> Back to Coupons
+    </a>
+    <h2 class="fw-bold mb-0"><i class="bi bi-receipt text-primary me-2"></i>Coupon Usage Ledger</h2>
+  </div>
+  <div class="mt-3 mt-md-0 text-muted small">
+    Total Recorded Redemptions: <strong class="text-dark">{{ usages|length }}</strong>
+  </div>
+</div>
+
+<div class="mp-card p-3 mb-4">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-8">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" id="tableSearch" class="form-control border-start-0" placeholder="Search by coupon code, customer, or invoice...">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mp-card">
+  <div class="table-responsive">
+    <table class="table mp-table table-filterable">
+      <thead>
+        <tr>
+          <th>Coupon Code</th>
+          <th>Coupon Name</th>
+          <th>Customer Details</th>
+          <th>Invoice #</th>
+          <th>Discount Saved</th>
+          <th>Final Order Paid</th>
+          <th>Usage Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in usages %}
+          <tr>
+            <td>
+              <span class="badge bg-warning text-dark font-monospace fs-6 px-2 py-1">{{ u.coupon_code }}</span>
+            </td>
+            <td>{{ u.coupon_name }}</td>
+            <td>
+              <div class="fw-semibold text-dark">{{ u.customer_name }}</div>
+              <small class="text-muted">{{ u.customer_email }}</small>
+            </td>
+            <td class="font-monospace text-primary fw-bold">{{ u.invoice_number or '—' }}</td>
+            <td class="fw-bold text-success">-{{ u.discount_applied | currency }}</td>
+            <td class="fw-semibold">{{ u.final_amount | currency if u.final_amount else '—' }}</td>
+            <td class="small text-muted">{{ u.used_at }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">No coupon usage records found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

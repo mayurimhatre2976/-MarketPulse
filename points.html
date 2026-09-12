@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Points History & Ledger – MarketPulse{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 pb-2 border-bottom">
+  <div>
+    <h2 class="fw-bold mb-1"><i class="bi bi-stars text-primary me-2"></i>My Loyalty Points Ledger</h2>
+    <p class="text-muted mb-0">Detailed transaction audit of all points earned, redeemed, and credited.</p>
+  </div>
+  <div class="mt-3 mt-md-0">
+    <a href="{{ url_for('rewards.list_rewards_customer') }}" class="btn btn-primary">
+      <i class="bi bi-gift-fill me-1"></i> Redeem for Rewards
+    </a>
+  </div>
+</div>
+
+<!-- Points Overview Header -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Current Points Available</div>
+      <div class="fs-2 fw-bold text-primary">
+        <i class="bi bi-star-fill text-warning fs-3 me-1"></i> {{ current_points }} <span class="fs-6 text-muted">pts</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Total Lifetime Earned</div>
+      <div class="fs-2 fw-bold text-success">
+        +{{ total_earned }} <span class="fs-6 text-muted">pts</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Total Points Redeemed</div>
+      <div class="fs-2 fw-bold text-danger">
+        -{{ total_redeemed }} <span class="fs-6 text-muted">pts</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Configurable Rule Notice -->
+<div class="alert alert-info d-flex align-items-center mb-4 border-0 shadow-sm" role="alert">
+  <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+  <div>
+    <strong>How You Earn Points:</strong> For every <strong>₹100</strong> spent on qualified in-store purchases, you automatically receive <strong>10 Loyalty Points</strong>. Points are immediately credited upon invoice verification!
+  </div>
+</div>
+
+<!-- Search & Filter Controls -->
+<div class="mp-card p-3 mb-4">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-8">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+        <input type="text" id="tableSearch" class="form-control border-start-0" placeholder="Search points activity by description, invoice, or type...">
+      </div>
+    </div>
+    <div class="col-md-4 text-md-end text-muted small">
+      Total Transactions: <strong class="text-dark">{{ transactions|length }}</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Ledger Table -->
+<div class="mp-card">
+  <div class="table-responsive">
+    <table class="table mp-table table-filterable">
+      <thead>
+        <tr>
+          <th>Transaction ID</th>
+          <th>Date & Time</th>
+          <th>Activity Type</th>
+          <th>Description & Reference</th>
+          <th class="text-end">Points Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in transactions %}
+          <tr>
+            <td class="font-monospace text-muted">#{{ t.id }}</td>
+            <td class="small">{{ t.created_at }}</td>
+            <td>
+              <span class="badge badge-{{ t.transaction_type.lower() }}">{{ t.transaction_type }}</span>
+            </td>
+            <td>{{ t.description }}</td>
+            <td class="text-end fw-bold fs-6">
+              {% if t.points > 0 %}
+                <span class="text-success">+{{ t.points }} pts</span>
+              {% else %}
+                <span class="text-danger">{{ t.points }} pts</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5" class="text-center text-muted py-4">No points transactions recorded yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

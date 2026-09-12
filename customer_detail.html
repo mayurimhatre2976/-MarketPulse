@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Profile: {{ customer.name }} – MarketPulse Admin{% endblock %}
+
+{% block content %}
+<div class="mb-4 pb-2 border-bottom d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+  <div>
+    <a href="{{ url_for('admin.customers') }}" class="btn btn-sm btn-outline-secondary mb-2">
+      <i class="bi bi-arrow-left me-1"></i> Back to Directory
+    </a>
+    <h2 class="fw-bold mb-0">Customer: {{ customer.name }}</h2>
+  </div>
+  <div class="mt-3 mt-md-0 d-flex gap-2">
+    <button class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#adjustPointsModal">
+      <i class="bi bi-sliders me-1"></i> Adjust Points
+    </button>
+    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editCustomerModal">
+      <i class="bi bi-pencil-square me-1"></i> Edit Profile
+    </button>
+  </div>
+</div>
+
+<!-- Profile Overview Summary Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Loyalty Tier</div>
+      <div>
+        <span class="tier-badge tier-{{ tier.lower() }} fs-6">
+          <i class="bi bi-shield-check"></i> {{ tier }} Member
+        </span>
+      </div>
+      <div class="small text-muted mt-2">Lifetime Earned: <strong>{{ points_earned }} pts</strong></div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Current Points Balance</div>
+      <div class="fs-3 fw-bold text-primary">
+        <i class="bi bi-star-fill text-warning fs-4 me-1"></i> {{ customer.points_balance }} <span class="fs-6 text-muted">pts</span>
+      </div>
+      <div class="small text-muted mt-1">Available for redemption</div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Contact Email</div>
+      <div class="fw-semibold text-dark text-truncate">{{ customer.email }}</div>
+      <div class="small text-muted mt-2">Phone: <span class="font-monospace text-dark">{{ customer.phone }}</span></div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="mp-card p-3 h-100">
+      <div class="text-muted small fw-semibold uppercase mb-1">Account Info</div>
+      <div class="small text-muted">Customer ID: <strong class="font-monospace text-dark">#{{ customer.id }}</strong></div>
+      <div class="small text-muted mt-1">Registered: <strong>{{ customer.created_at }}</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed Data Nav Tabs -->
+<div class="mp-card">
+  <div class="p-3 border-bottom">
+    <ul class="nav nav-pills" id="customerTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-semibold" id="points-tab" data-bs-toggle="tab" data-bs-target="#points-pane" type="button" role="tab">
+          <i class="bi bi-stars me-1"></i> Points Ledger ({{ transactions|length }})
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchases-pane" type="button" role="tab">
+          <i class="bi bi-receipt me-1"></i> Purchases ({{ purchases|length }})
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold" id="redemptions-tab" data-bs-toggle="tab" data-bs-target="#redemptions-pane" type="button" role="tab">
+          <i class="bi bi-gift me-1"></i> Reward Redemptions ({{ redemptions|length }})
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tab-content p-3" id="customerTabContent">
+    <!-- Tab 1: Loyalty Points Ledger -->
+    <div class="tab-pane fade show active" id="points-pane" role="tabpanel">
+      <div class="table-responsive">
+        <table class="table mp-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date & Time</th>
+              <th>Transaction Type</th>
+              <th>Description</th>
+              <th class="text-end">Points Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transactions %}
+              <tr>
+                <td class="font-monospace text-muted">#{{ t.id }}</td>
+                <td class="small">{{ t.created_at }}</td>
+                <td>
+                  <span class="badge badge-{{ t.transaction_type.lower() }}">{{ t.transaction_type }}</span>
+                </td>
+                <td>{{ t.description }}</td>
+                <td class="text-end fw-bold fs-6">
+                  {% if t.points > 0 %}
+                    <span class="text-success">+{{ t.points }} pts</span>
+                  {% else %}
+                    <span class="text-danger">{{ t.points }} pts</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr><td colspan="5" class="text-center text-muted py-3">No loyalty transactions recorded.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Purchases -->
+    <div class="tab-pane fade" id="purchases-pane" role="tabpanel">
+      <div class="table-responsive">
+        <table class="table mp-table">
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Gross Amt</th>
+              <th>Discount</th>
+              <th>Final Paid</th>
+              <th>Points Earned</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in purchases %}
+              <tr>
+                <td class="fw-bold font-monospace text-primary">{{ p.invoice_number }}</td>
+                <td>{{ p.purchase_date }}</td>
+                <td>{{ p.description or '—' }}</td>
+                <td>{{ p.amount | currency }}</td>
+                <td>
+                  {% if p.discount_amount > 0 %}
+                    <span class="text-success">-{{ p.discount_amount | currency }}</span>
+                    {% if p.coupon_code %}<span class="badge bg-warning text-dark small ms-1">{{ p.coupon_code }}</span>{% endif %}
+                  {% else %}
+                    <span class="text-muted">₹0.00</span>
+                  {% endif %}
+                </td>
+                <td class="fw-bold">{{ p.final_amount | currency }}</td>
+                <td><span class="badge badge-earn">+{{ p.points_earned }} pts</span></td>
+              </tr>
+            {% else %}
+              <tr><td colspan="7" class="text-center text-muted py-3">No purchases recorded for this customer.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Redemptions -->
+    <div class="tab-pane fade" id="redemptions-pane" role="tabpanel">
+      <div class="table-responsive">
+        <table class="table mp-table">
+          <thead>
+            <tr>
+              <th>Voucher Code</th>
+              <th>Reward Item</th>
+              <th>Points Deducted</th>
+              <th>Redeemed Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in redemptions %}
+              <tr>
+                <td class="fw-bold font-monospace text-danger">{{ r.redemption_code }}</td>
+                <td>{{ r.reward_name }}</td>
+                <td><span class="badge badge-redeem">-{{ r.points_used }} pts</span></td>
+                <td>{{ r.redemption_date }}</td>
+                <td><span class="badge bg-success">{{ r.status }}</span></td>
+              </tr>
+            {% else %}
+              <tr><td colspan="5" class="text-center text-muted py-3">No rewards redeemed yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Adjust Points Modal -->
+<div class="modal fade" id="adjustPointsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="bi bi-sliders text-warning me-2"></i>Adjust Loyalty Points</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('admin.adjust_points') }}">
+        <input type="hidden" name="customer_id" value="{{ customer.id }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Adjustment Action</label>
+            <select class="form-select" name="adjustment_type" required>
+              <option value="credit">Credit Points (Add to balance)</option>
+              <option value="debit">Debit Points (Deduct from balance)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Points Amount</label>
+            <input type="number" class="form-control" name="points" min="1" placeholder="e.g. 50" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Reason / Description</label>
+            <input type="text" class="form-control" name="reason" placeholder="e.g. Customer goodwill bonus / store return adjustment" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Apply Adjustment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Customer Profile Modal -->
+<div class="modal fade" id="editCustomerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square text-primary me-2"></i>Edit Customer Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('admin.edit_customer', customer_id=customer.id) }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name</label>
+            <input type="text" class="form-control" name="name" value="{{ customer.name }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email Address</label>
+            <input type="email" class="form-control" name="email" value="{{ customer.email }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone Number</label>
+            <input type="tel" class="form-control" name="phone" value="{{ customer.phone }}" pattern="[0-9]{10}" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

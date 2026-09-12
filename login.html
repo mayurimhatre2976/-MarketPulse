@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In – MarketPulse Retail Loyalty Platform{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="text-center mb-4">
+      <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" style="width: 64px; height: 64px;">
+        <i class="bi bi-shield-lock-fill fs-2"></i>
+      </div>
+      <h3 class="fw-bold text-dark mb-1">Account Login</h3>
+      <p class="text-muted small">Enter your credentials to access your MarketPulse portal</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Email Address</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+          <input type="email" class="form-control border-start-0 ps-0" id="email" name="email" value="{{ email or '' }}" placeholder="name@example.com" autocomplete="email" required autofocus>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+          <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+          <button class="btn btn-outline-secondary border-start-0 bg-light" type="button" id="togglePasswordBtn" title="Toggle password visibility">
+            <i class="bi bi-eye" id="togglePasswordIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe">
+          <label class="form-check-label small text-muted" for="rememberMe">
+            Remember this device
+          </label>
+        </div>
+        <span class="small text-muted">Secure 256-Bit SSL</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm mb-3">
+        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Portal
+      </button>
+    </form>
+
+    <div class="text-center pt-3 border-top mt-2">
+      <span class="text-muted small">New to MarketPulse Loyalty?</span>
+      <a href="{{ url_for('auth.register') }}" class="small fw-bold text-decoration-none ms-1 text-primary">Create Customer Account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+  const passwordInput = document.getElementById('password');
+  const toggleIcon = document.getElementById('togglePasswordIcon');
+
+  if (togglePasswordBtn && passwordInput && toggleIcon) {
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleIcon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+    });
+  }
+});
+</script>
+{% endblock %}

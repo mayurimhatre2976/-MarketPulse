@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}MarketPulse – Retail Customer Loyalty & Rewards Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row align-items-center py-5">
+  <div class="col-lg-7 mb-4 mb-lg-0">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-10 text-primary fw-bold fs-6 mb-3">
+      <i class="bi bi-award-fill"></i> Enterprise Retail Loyalty Platform
+    </div>
+    <h1 class="display-4 fw-bold text-dark mb-3" style="line-height: 1.2;">
+      Empower Your Retail Store With <span class="text-primary">Intelligent Customer Loyalty</span>.
+    </h1>
+    <p class="lead text-muted mb-4">
+      MarketPulse is an end-to-end retail loyalty management platform. Effortlessly issue points on purchase invoices, manage reward catalogues, validate smart coupons in real-time, and launch promotional campaigns.
+    </p>
+    <div class="d-flex flex-wrap gap-3">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 py-2 shadow-sm">
+        <i class="bi bi-box-arrow-in-right me-2"></i> Access Portal
+      </a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-outline-secondary btn-lg px-4 py-2">
+        <i class="bi bi-person-plus me-2"></i> Register New Customer
+      </a>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="d-flex flex-wrap gap-4 mt-4 pt-3 border-top text-muted small">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+        <span>Atomic Points Ledger</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-check text-primary fs-5"></i>
+        <span>Role-Based Auth (Admin & Customer)</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-lightning-charge-fill text-warning fs-5"></i>
+        <span>Real-Time POS Coupon Validation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Digital Membership Card Graphic -->
+  <div class="col-lg-5">
+    <div class="card border-0 shadow-lg rounded-4 p-4 text-white position-relative overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2563eb 100%);">
+      <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-shop fs-4 text-white"></i>
+            <span class="fw-bold fs-5 tracking-wide">MarketPulse VIP</span>
+          </div>
+          <small class="text-white-50">Digital Retail Loyalty Pass</small>
+        </div>
+        <span class="badge bg-warning text-dark fw-bold px-3 py-1 rounded-pill">
+          <i class="bi bi-award-fill me-1"></i> Gold Member
+        </span>
+      </div>
+
+      <div class="my-3 py-2">
+        <div class="text-white-50 small mb-1">AVAILABLE BALANCE</div>
+        <div class="display-6 fw-bold text-white mb-2">
+          520 <span class="fs-5 text-white-50">Points</span>
+        </div>
+        <div class="progress mp-progress" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+          <div class="progress-bar bg-warning" role="progressbar" style="width: 75%;"></div>
+        </div>
+        <div class="d-flex justify-content-between text-white-50 small mt-1">
+          <span>Tier Progress</span>
+          <span>480 pts to Platinum</span>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top border-white border-opacity-10 small">
+        <div>
+          <div class="text-white-50" style="font-size: 0.75rem;">EARNING RATIO</div>
+          <div class="fw-semibold">10 Pts per ₹100 Spent</div>
+        </div>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-light fw-bold px-3 py-1 text-primary">
+          Sign In Now &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Live Operational Metrics -->
+<section class="py-4 my-2">
+  <div class="row g-3 text-center">
+    <div class="col-sm-6 col-lg-3">
+      <div class="mp-card p-4 h-100">
+        <div class="fs-2 fw-bold text-primary mb-1">100%</div>
+        <div class="text-muted small fw-semibold text-uppercase">Audit Accuracy</div>
+        <div class="text-muted small mt-1">Immutable transaction ledger</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="mp-card p-4 h-100">
+        <div class="fs-2 fw-bold text-success mb-1">4 Tiers</div>
+        <div class="text-muted small fw-semibold text-uppercase">Loyalty Progression</div>
+        <div class="text-muted small mt-1">Bronze, Silver, Gold & Platinum</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="mp-card p-4 h-100">
+        <div class="fs-2 fw-bold text-warning mb-1">&lt; 10ms</div>
+        <div class="text-muted small fw-semibold text-uppercase">Coupon Validation</div>
+        <div class="text-muted small mt-1">Sub-second POS checks</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="mp-card p-4 h-100">
+        <div class="fs-2 fw-bold text-purple mb-1">MySQL</div>
+        <div class="text-muted small fw-semibold text-uppercase">Relational Backend</div>
+        <div class="text-muted small mt-1">Fully normalized schema</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Key Features Section -->
+<section id="features" class="py-5 border-top">
+  <div class="text-center max-w-700 mx-auto mb-5">
+    <h2 class="fw-bold">Comprehensive Retail Loyalty Capabilities</h2>
+    <p class="text-muted">Engineered specifically for supermarkets, fashion stores, department outlets, and retail chains.</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon primary mb-3">
+          <i class="bi bi-stars"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Automated Points Engine</h5>
+        <p class="text-muted mb-0">Configurable backend conversion rules (e.g. 10 points per ₹100 spent) that automatically calculate and credit customer points on recorded sales.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon success mb-3">
+          <i class="bi bi-gift-fill"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Rewards & Voucher Catalog</h5>
+        <p class="text-muted mb-0">Manage retail rewards with inventory stock thresholds, required points, expiry dates, and instant unique voucher codes.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon warning mb-3">
+          <i class="bi bi-ticket-perforated-fill"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Smart Coupon Management</h5>
+        <p class="text-muted mb-0">Issue fixed and percentage coupons with minimum spend requirements, total usage caps, and active date range verification.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon purple mb-3">
+          <i class="bi bi-megaphone-fill"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Promotional Campaigns</h5>
+        <p class="text-muted mb-0">Broadcast seasonal festival sales, double-points weekends, and category discounts targeted directly to loyalty members.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon info mb-3">
+          <i class="bi bi-receipt-cutoff"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Purchase & Invoicing Ledger</h5>
+        <p class="text-muted mb-0">Maintain an accurate audit trail of customer purchase invoices, discounts applied, and resulting loyalty point earnings.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mp-card p-4 h-100 mp-card-hover">
+        <div class="kpi-icon danger mb-3">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Secure Role-Based Portals</h5>
+        <p class="text-muted mb-0">Dedicated interfaces for Store Administrators to manage inventory & sales, and Customers to track their personal points ledger.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section -->
+<section id="benefits" class="py-5 bg-white rounded-4 p-4 p-lg-5 my-4 border">
+  <div class="row align-items-center">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <span class="badge bg-primary bg-opacity-10 text-primary fw-bold mb-2 px-3 py-1 rounded-pill">Strategic Retail Value</span>
+      <h2 class="fw-bold mb-3">Why Retailers Choose MarketPulse</h2>
+      <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+        <li class="d-flex align-items-start gap-3">
+          <i class="bi bi-check-circle-fill text-success fs-5"></i>
+          <div>
+            <strong>Accelerate Repeat Visits:</strong> Encourage customers to return regularly to accumulate points toward aspirational vouchers.
+          </div>
+        </li>
+        <li class="d-flex align-items-start gap-3">
+          <i class="bi bi-check-circle-fill text-success fs-5"></i>
+          <div>
+            <strong>Atomic Transaction Integrity:</strong> Every point awarded, redeemed, or adjusted is written in an atomic transaction scope.
+          </div>
+        </li>
+        <li class="d-flex align-items-start gap-3">
+          <i class="bi bi-check-circle-fill text-success fs-5"></i>
+          <div>
+            <strong>Zero Friction POS Flow:</strong> Rapid customer lookup and instant coupon verification without slowing checkout queues.
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-6">
+      <div class="bg-light p-4 rounded-4 border">
+        <h5 class="fw-bold mb-3"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Loyalty Tier Structure</h5>
+        <div class="d-flex flex-column gap-2">
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-white border">
+            <span class="tier-badge tier-bronze"><i class="bi bi-shield-shaded"></i> Bronze Member</span>
+            <span class="text-muted small">0 – 199 Points</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-white border">
+            <span class="tier-badge tier-silver"><i class="bi bi-shield-fill"></i> Silver Member</span>
+            <span class="text-muted small">200 – 499 Points</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-white border">
+            <span class="tier-badge tier-gold"><i class="bi bi-award-fill"></i> Gold Member</span>
+            <span class="text-muted small">500 – 999 Points</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-white border">
+            <span class="tier-badge tier-platinum"><i class="bi bi-gem"></i> Platinum Member</span>
+            <span class="text-muted small">1,000+ Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 text-center">
+  <div class="max-w-700 mx-auto">
+    <h3 class="fw-bold mb-3">Ready to Experience MarketPulse?</h3>
+    <p class="text-muted mb-4">
+      Log in with your authorized credentials or register a new customer account to explore the complete retail loyalty system.
+    </p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-primary px-4 py-2">
+        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Account
+      </a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary px-4 py-2">
+        <i class="bi bi-person-plus me-1"></i> Register New Member
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

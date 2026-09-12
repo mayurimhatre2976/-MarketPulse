@@ -1,0 +1,327 @@
+/* MarketPulse - Retail Customer Loyalty System CSS */
+
+:root {
+  --mp-primary: #2563eb;
+  --mp-primary-hover: #1d4ed8;
+  --mp-secondary: #0f172a;
+  --mp-accent: #059669;
+  --mp-warning: #d97706;
+  --mp-danger: #dc2626;
+  --mp-info: #0284c7;
+  --mp-purple: #7c3aed;
+  
+  --mp-bg-light: #f8fafc;
+  --mp-card-bg: #ffffff;
+  --mp-border-color: #e2e8f0;
+  --mp-text-main: #1e293b;
+  --mp-text-muted: #64748b;
+
+  --mp-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --mp-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --mp-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--mp-bg-light);
+  color: var(--mp-text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Custom Navbar */
+.mp-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--mp-border-color);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.mp-brand {
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--mp-secondary) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mp-brand .pulse-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--mp-primary);
+  border-radius: 50%;
+  display: inline-block;
+  animation: mp-pulse 2s infinite;
+}
+
+@keyframes mp-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #475569 !important;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--mp-primary) !important;
+  background-color: #eff6ff;
+}
+
+/* Custom Cards */
+.mp-card {
+  background: var(--mp-card-bg);
+  border: 1px solid var(--mp-border-color);
+  border-radius: 12px;
+  box-shadow: var(--mp-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mp-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mp-shadow);
+}
+
+.mp-card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--mp-border-color);
+  padding: 1.1rem 1.25rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* KPI Summary Cards */
+.kpi-card {
+  border-radius: 12px;
+  border: 1px solid var(--mp-border-color);
+  background: #ffffff;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--mp-shadow-sm);
+}
+
+.kpi-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.kpi-icon.primary { background: #eff6ff; color: var(--mp-primary); }
+.kpi-icon.success { background: #ecfdf5; color: var(--mp-accent); }
+.kpi-icon.warning { background: #fffbeb; color: var(--mp-warning); }
+.kpi-icon.danger { background: #fef2f2; color: var(--mp-danger); }
+.kpi-icon.purple { background: #f5f3ff; color: var(--mp-purple); }
+.kpi-icon.info { background: #f0f9ff; color: var(--mp-info); }
+
+.kpi-val {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--mp-secondary);
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--mp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Loyalty Points Badges */
+.points-pill {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.points-pill-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+}
+
+.points-pill-silver {
+  background: linear-gradient(135deg, #64748b, #475569);
+  color: #ffffff;
+}
+
+.points-pill-platinum {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: #ffffff;
+}
+
+/* Loyalty Tier Badges */
+.tier-badge {
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.tier-bronze { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.tier-silver { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+.tier-gold { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.tier-platinum { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+
+/* Status Badges */
+.badge-active { background: #dcfce7; color: #166534; font-weight: 600; }
+.badge-inactive { background: #f1f5f9; color: #64748b; font-weight: 600; }
+.badge-earn { background: #dcfce7; color: #15803d; font-weight: 600; }
+.badge-redeem { background: #fee2e2; color: #b91c1c; font-weight: 600; }
+.badge-bonus { background: #fef3c7; color: #b45309; font-weight: 600; }
+.badge-adjustment { background: #e0f2fe; color: #0369a1; font-weight: 600; }
+
+/* Tables */
+.mp-table {
+  vertical-align: middle;
+  margin-bottom: 0;
+}
+
+.mp-table th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.85rem 1rem;
+  border-top: none;
+}
+
+.mp-table td {
+  padding: 0.9rem 1rem;
+  color: #1e293b;
+  border-bottom: 1px solid var(--mp-border-color);
+}
+
+.mp-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Coupon Code Box */
+.coupon-box {
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coupon-code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-weight: 700;
+  color: var(--mp-primary);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--mp-primary);
+  border-color: var(--mp-primary);
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--mp-primary-hover);
+  border-color: var(--mp-primary-hover);
+}
+
+.btn-secondary {
+  background-color: #64748b;
+  border-color: #64748b;
+  border-radius: 8px;
+}
+
+.btn-outline-primary {
+  color: var(--mp-primary);
+  border-color: var(--mp-primary);
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--mp-primary);
+  color: #ffffff;
+}
+
+/* Progress Bars */
+.mp-progress {
+  height: 8px;
+  border-radius: 10px;
+  background-color: #e2e8f0;
+  overflow: hidden;
+}
+
+/* Footer */
+.mp-footer {
+  background: #ffffff;
+  border-top: 1px solid var(--mp-border-color);
+  color: var(--mp-text-muted);
+  font-size: 0.9rem;
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+  border-radius: 8px;
+  border-color: var(--mp-border-color);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--mp-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Auth Cards */
+.auth-wrapper {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border: 1px solid var(--mp-border-color);
+  border-radius: 16px;
+  box-shadow: var(--mp-shadow-lg);
+  padding: 2.5rem 2rem;
+}

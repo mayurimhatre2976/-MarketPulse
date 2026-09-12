@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}My Loyalty Dashboard – MarketPulse{% endblock %}
+
+{% block content %}
+<!-- Welcome & Tier Header Banner -->
+<div class="card border-0 rounded-4 shadow-sm p-4 mb-4 bg-white">
+  <div class="row align-items-center">
+    <div class="col-lg-7 mb-3 mb-lg-0">
+      <div class="d-flex align-items-center gap-3">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white fs-2 fw-bold" style="width: 56px; height: 56px;">
+          {{ user.name[0] }}
+        </div>
+        <div>
+          <h3 class="fw-bold mb-0">Hello, {{ user.name }}!</h3>
+          <span class="tier-badge tier-{{ tier_info.name.lower() }} mt-1">
+            <i class="bi bi-shield-check"></i> {{ tier_info.name }} Member
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-5">
+      <div class="p-3 bg-light rounded-3 border">
+        <div class="d-flex justify-content-between align-items-center mb-1 small">
+          <span class="fw-semibold text-muted">Tier Status Progress</span>
+          {% if tier_info.next_tier %}
+            <span class="text-primary fw-semibold">{{ tier_info.points_needed }} pts to {{ tier_info.next_tier }}</span>
+          {% else %}
+            <span class="text-success fw-bold"><i class="bi bi-award-fill"></i> Maximum Tier Unlocked</span>
+          {% endif %}
+        </div>
+        <div class="progress mp-progress">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: {{ tier_info.progress }}%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Points Summary KPI Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="mp-card p-3 h-100 mp-card-hover">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="kpi-label">Current Balance</span>
+        <div class="kpi-icon primary" style="width: 40px; height: 40px; font-size: 1.2rem;">
+          <i class="bi bi-star-fill text-warning"></i>
+        </div>
+      </div>
+      <div class="kpi-val text-primary">{{ current_points }} <span class="fs-6 text-muted">pts</span></div>
+      <div class="small text-muted mt-1">Ready to redeem for vouchers</div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="mp-card p-3 h-100 mp-card-hover">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="kpi-label">Lifetime Earned</span>
+        <div class="kpi-icon success" style="width: 40px; height: 40px; font-size: 1.2rem;">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+      </div>
+      <div class="kpi-val text-success">+{{ total_earned }} <span class="fs-6 text-muted">pts</span></div>
+      <div class="small text-muted mt-1">From in-store purchases & bonuses</div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="mp-card p-3 h-100 mp-card-hover">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="kpi-label">Points Redeemed</span>
+        <div class="kpi-icon warning" style="width: 40px; height: 40px; font-size: 1.2rem;">
+          <i class="bi bi-gift"></i>
+        </div>
+      </div>
+      <div class="kpi-val text-danger">-{{ total_redeemed }} <span class="fs-6 text-muted">pts</span></div>
+      <div class="small text-muted mt-1">Used on rewards & discounts</div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="mp-card p-3 h-100 mp-card-hover">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="kpi-label">Rewards Claimed</span>
+        <div class="kpi-icon purple" style="width: 40px; height: 40px; font-size: 1.2rem;">
+          <i class="bi bi-ticket-perforated"></i>
+        </div>
+      </div>
+      <div class="kpi-val text-dark">{{ rewards_count }} <span class="fs-6 text-muted">items</span></div>
+      <div class="small text-muted mt-1">
+        <a href="{{ url_for('rewards.my_redemptions') }}" class="text-decoration-none">View my vouchers &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Action Shortcuts -->
+<div class="mb-4">
+  <div class="d-flex flex-wrap gap-2">
+    <a href="{{ url_for('rewards.list_rewards_customer') }}" class="btn btn-outline-primary px-3 py-2">
+      <i class="bi bi-gift-fill me-1"></i> Browse Rewards Catalog
+    </a>
+    <a href="{{ url_for('coupons.list_coupons_customer') }}" class="btn btn-outline-warning text-dark px-3 py-2">
+      <i class="bi bi-tag-fill text-warning me-1"></i> Available Coupons
+    </a>
+    <a href="{{ url_for('customer.purchase_history') }}" class="btn btn-outline-secondary px-3 py-2">
+      <i class="bi bi-receipt me-1"></i> Purchase History
+    </a>
+    <a href="{{ url_for('customer.points_history') }}" class="btn btn-outline-info text-dark px-3 py-2">
+      <i class="bi bi-stars text-primary me-1"></i> Points Ledger
+    </a>
+    <a href="{{ url_for('campaigns.list_campaigns_customer') }}" class="btn btn-outline-danger px-3 py-2">
+      <i class="bi bi-megaphone-fill me-1"></i> Store Offers
+    </a>
+  </div>
+</div>
+
+<!-- Active Promotional Campaign Highlights Banner -->
+{% if active_campaigns %}
+  <div class="row g-3 mb-4">
+    {% for camp in active_campaigns %}
+      <div class="col-md-6">
+        <div class="card border-0 rounded-4 shadow-sm p-4 bg-primary bg-opacity-10 h-100">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="badge bg-primary">{{ camp.campaign_type }}</span>
+            <span class="small text-muted">Valid till {{ camp.end_date }}</span>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">{{ camp.name }}</h5>
+          <p class="text-muted small mb-2">{{ camp.description }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top border-primary border-opacity-25">
+            <span class="fw-bold text-primary">{{ camp.offer }}</span>
+            <a href="{{ url_for('campaigns.list_campaigns_customer') }}" class="btn btn-sm btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- Recent Activity Feeds Row -->
+<div class="row g-4">
+  <!-- Recent Points Activity -->
+  <div class="col-lg-6">
+    <div class="mp-card h-100">
+      <div class="mp-card-header">
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-stars text-primary"></i> Points Ledger Activity
+        </span>
+        <a href="{{ url_for('customer.points_history') }}" class="btn btn-sm btn-outline-primary">Full Ledger</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table mp-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th class="text-end">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in recent_transactions %}
+              <tr>
+                <td class="small text-muted">{{ t.created_at }}</td>
+                <td>
+                  <span class="badge badge-{{ t.transaction_type.lower() }} me-1">{{ t.transaction_type }}</span>
+                  <span class="small">{{ t.description }}</span>
+                </td>
+                <td class="text-end fw-bold">
+                  {% if t.points > 0 %}
+                    <span class="text-success">+{{ t.points }} pts</span>
+                  {% else %}
+                    <span class="text-danger">{{ t.points }} pts</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3" class="text-center text-muted py-3">No activity recorded yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Purchases -->
+  <div class="col-lg-6">
+    <div class="mp-card h-100">
+      <div class="mp-card-header">
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-receipt text-success"></i> Recent In-Store Purchases
+        </span>
+        <a href="{{ url_for('customer.purchase_history') }}" class="btn btn-sm btn-outline-primary">All Purchases</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table mp-table">
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Date</th>
+              <th>Amount Paid</th>
+              <th>Earned</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in recent_purchases %}
+              <tr>
+                <td class="fw-bold font-monospace text-primary">{{ p.invoice_number }}</td>
+                <td class="small text-muted">{{ p.purchase_date }}</td>
+                <td class="fw-semibold">{{ p.final_amount | currency }}</td>
+                <td><span class="badge badge-earn">+{{ p.points_earned }} pts</span></td>
+              </tr>
+            {% else %}
+              <tr><td colspan="4" class="text-center text-muted py-3">No purchases found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
